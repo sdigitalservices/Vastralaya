@@ -1,0 +1,836 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"><meta content="web_standard" name="shell-type"><style>@layer base{html,body{margin:0;padding:0;scroll-behavior:smooth;}body{overscroll-behavior:none;overflow-x:hidden;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+.reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
+.reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); }
+@keyframes floatBadge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.floating-badge { animation: floatBadge 3s ease-in-out infinite; }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(143, 78, 0, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(143, 78, 0, 0); } }
+.pulse-glow { animation: pulseGlow 2s infinite; }
+.btn-ripple { position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.btn-ripple:active { transform: scale(0.97); }
+
+/* Custom Hamburger and Navigation Styles for Mobile/Desktop Switching & In-App Browsers */
+@media (max-width: 1023px) {
+  #desktop-nav { display: none !important; }
+}
+@media (min-width: 1024px) {
+  #mobile-menu-btn { display: none !important; }
+  #mobile-dropdown-menu { display: none !important; }
+}
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary-fixed":"#ffdcc2","surface-variant":"#e5e2e1","on-primary":"#ffffff","surface":"#fcf9f8","inverse-on-surface":"#f3f0ef","on-error":"#ffffff","on-tertiary":"#ffffff","primary":"#8f4e00","secondary-fixed":"#ffdad4","secondary-container":"#fe725f","error-container":"#ffdad6","inverse-surface":"#313030","on-secondary-container":"#6f0703","on-secondary-fixed-variant":"#891d12","on-surface":"#1c1b1b","surface-container-high":"#eae7e7","error":"#ba1a1a","surface-container":"#f0eded","tertiary-container":"#b4b2ac","surface-container-lowest":"#ffffff","outline-variant":"#dbc2b0","surface-tint":"#8f4e00","on-surface-variant":"#554336","on-primary-fixed-variant":"#6d3a00","surface-container-low":"#f6f3f2","on-secondary":"#ffffff","secondary":"#aa3527","surface-container-highest":"#e5e2e1","on-error-container":"#93000a","inverse-primary":"#ffb77a","tertiary":"#5f5e59","on-primary-fixed":"#2e1500","on-tertiary-container":"#454540","primary-fixed-dim":"#ffb77a","on-tertiary-fixed":"#1c1c18","tertiary-fixed-dim":"#c9c6c0","tertiary-fixed":"#e5e2db","primary-container":"#ff9933","on-secondary-fixed":"#410000","on-background":"#1c1b1b","on-tertiary-fixed-variant":"#474742","background":"#fcf9f8","surface-bright":"#fcf9f8","surface-dim":"#dcd9d9","secondary-fixed-dim":"#ffb4a8","on-primary-container":"#693800","outline":"#887364"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin":"32px","space-md":"16px","space-lg":"32px","space-xl":"64px","space-sm":"8px","space-xs":"4px","gutter":"24px"},"fontFamily":{"headline-xl":["Newsreader"],"body-md":["Inter"],"headline-lg":["Newsreader"],"body-lg":["Inter"],"headline-lg-mobile":["Newsreader"],"headline-xl-mobile":["Newsreader"],"label-lg":["Inter"],"headline-md":["Newsreader"],"label-md":["Inter"],"body-sm":["Inter"]},"fontSize":{"headline-xl":["48px",{"lineHeight":"56px","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg":["36px",{"lineHeight":"44px","fontWeight":"500"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"headline-lg-mobile":["28px",{"lineHeight":"36px","fontWeight":"500"}],"headline-xl-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"500"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"500"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}]}}}};</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Newsreader:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"></head>
+<body class="bg-surface font-body-md text-on-surface" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all duration-300">
+  <div class="h-20 w-full px-gutter flex items-center justify-between">
+    <div class="flex items-center gap-space-sm">
+      <img alt="Vastralaya Logo" class="h-8 w-auto object-contain transition-transform hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaxZGZMf_jIATFeYaY66vD-LrbFNWcDirS9LhOmIC3t9ab9-HnE8tRgCM7wXL7jU8PvrB2a0W3vHp9Z4-2ADWaLr5E4VlIHSLbIClAuJlA5rV_pV16DYlVUYFXu9jpFzikQ18Kr0ZOY2sbbtC41e-p47TVOnM-PuGtuQsZE8rHgqH1Rjlo2iFrFZyiQuxupohEdlwfxvzh7uVuU0EtPvvQavVgaD642Zrqj-FS46kR">
+      <span class="font-headline-md text-on-surface tracking-tight uppercase" style="font-family: Newsreader, serif; font-style: italic; font-weight: 600; letter-spacing: 0.025em;">Vastralaya</span>
+    </div>
+    
+    <!-- Desktop Navigation Bar (Horizontal Sequence for PC & Mobile Desktop View Mode) -->
+    <nav id="desktop-nav" class="hidden lg:flex items-center gap-space-lg" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg px-3 py-1.5">
+      <a aria-current="page" class="transition-all rounded-lg px-3 py-1.5 text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container" data-path="home" href="#home"><b>Home</b></a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="services" href="#collections">Services</a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="why-us" href="#why-us">Why Us</a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="about" href="#about">About</a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="founder" href="#founder">Founder</a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="gallery" href="#gallery">Gallery</a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="testimonials" href="#testimonials">Testimonials</a>
+      <a class="text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all px-3 py-1.5 font-semibold rounded-lg" data-path="contact" href="#contact">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-space-sm">
+      <a aria-label="Cart" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-container-highest transition-all transform hover:scale-110 active:scale-95" href="#cart"><span class="material-symbols-outlined text-on-surface text-[18px]">shopping_bag</span></a>
+      
+      <!-- Mobile Hamburger Icon Button (Fixed Clean at Right Side) -->
+      <button id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="lg:hidden w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-surface-container-highest transition-all focus:outline-none">
+        <span class="material-symbols-outlined text-[26px]">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu (Vertical List with Smooth Scroll & Auto-Close) -->
+  <div id="mobile-dropdown-menu" class="hidden lg:hidden absolute top-20 left-0 w-full bg-surface/95 backdrop-blur-2xl border-b border-surface-variant/30 shadow-xl py-4 px-6 flex flex-col gap-3 transition-all">
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#home">Home</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#collections">Services</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#why-us">Why Us</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#about">About</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#founder">Founder</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#gallery">Gallery</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#testimonials">Testimonials</a>
+    <a class="mobile-nav-link text-body-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-4 py-2.5 rounded-lg font-semibold transition-all" href="#contact">Contact</a>
+  </div>
+</header>
+
+<main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- SECTION 1: HERO / BANNER -->
+<section id="home" class="relative w-full min-h-[870px] bg-surface flex items-center justify-center overflow-hidden px-gutter py-space-xl"><div class="absolute inset-0 z-0"><img alt="Boutique background" class="w-full h-full object-cover opacity-20 transform scale-105 transition-transform duration-1000" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI0HPmYhy6ych4crqpBZ1dS4b-4dotqg1M2c4QTF99Cj84Ejaf507mpm_vrtfFuZy72Q26oJYEM2pC_FyAJeXPFrRyo82H7mvLwkAeZfUxh-mtxtMluCRuXiytKh0kWmeKY-IcESpIqw3vPW7Z-bcPr5UTtBdHo8JRwluJ9bCsChnzuh2KEF_kJD4C69PK0qxHqYL24Ne-oWfqcqp4CMpYuheM16kwMWzgJxVQBMFJ"><div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div></div>
+<div class="absolute inset-0 z-0 opacity-10 bg-[radial-gradient(#8f4e00_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center relative z-10 w-full">
+<div class="lg:col-span-7 flex flex-col items-start gap-space-md reveal-on-scroll revealed">
+<div class="inline-flex items-center gap-space-xs bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-label-lg uppercase tracking-wider text-[16px] font-bold floating-badge">
+<span class="material-symbols-outlined text-[16px]">verified</span> Nagpur's Premier Destination
+        </div>
+<h1 class="font-headline-xl text-on-surface tracking-tight font-black text-[56px] leading-[64px]">Timeless Indian Elegance for Modern Milestones</h1>
+<p class="font-body-lg text-on-surface font-medium text-[20px] leading-[32px] max-w-xl" style="font-size: 22px !important; line-height: 34px !important; font-weight: 600 !important; color: rgb(17, 17, 17) !important;">Step into Nagpur’s finest boutique for exquisite traditional and contemporary ethnic wear. Crafted with heritage textiles, meticulous hand-embroidery, and unmatched sartorial grace.</p>
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs">
+<a class="bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container transition-all px-6 py-3.5 rounded-lg font-label-lg flex items-center gap-space-sm shadow-md btn-ripple" href="https://wa.me/+919876543210?text=Hi,%20I%20saw%20your%20demo%20website%20and%20want%20to%20know%20more%20about%20your%20web%20development%20services." rel="noopener noreferrer" style="background-color: rgb(37, 211, 102) !important; color: white !important;" target="_blank"><span class="material-symbols-outlined">chat</span>
+            Chat on WhatsApp</a>
+<a class="bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-all px-6 py-3.5 rounded-lg font-label-lg flex items-center gap-space-sm bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container shadow-md btn-ripple" href="#collections" style="background-color: rgb(255, 153, 51) !important; color: white !important;">
+            Explore Collection
+            <span class="material-symbols-outlined transition-transform hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-3 gap-space-lg pt-space-md w-full max-w-lg">
+<div class="transform transition-transform hover:-translate-y-1">
+<div class="font-headline-lg text-primary">50+</div>
+<div class="font-body-sm text-on-surface-variant">Years of Trust</div>
+</div>
+<div class="transform transition-transform hover:-translate-y-1">
+<div class="font-headline-lg text-primary">10k+</div>
+<div class="font-body-sm text-on-surface-variant">Happy Brides</div>
+</div>
+<div class="transform transition-transform hover:-translate-y-1">
+<div class="font-headline-lg text-primary">100%</div>
+<div class="font-body-sm text-on-surface-variant">Pure Fabrics</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 relative reveal-on-scroll revealed">
+<div class="relative w-full h-[480px] rounded-xl overflow-hidden shadow-xl group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stunning portrait of an Indian bride in Nagpur wearing a rich crimson Kanjeevaram silk saree with intricate gold zari work, posing gracefully in a sunlit traditional courtyard with warm golden hour lighting and ornate architectural arches." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMTtUauENagcooYxlUWuYk5XX64gt85a3dexy-uBAW1mA5IlYNuyLCqoAxHImvZ0EA-D1j8X-02GiaF8V4ZmBUTj6whXvjLJO6ROoJPqlmOpnSNbn71Wp3S2xAhmSUn9Hy9zSYw7HTO2z_cblUhBSPN-L2pyro-NgcJHKkmRKQCrHSmRuIAk27xX3MXcnbl3koI-CZYe5A_9JHJ7gAc5AdoOkj0bMFKHj9o89kppJ6">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md p-4 rounded-lg flex items-center justify-between transition-transform transform group-hover:-translate-y-1">
+<div>
+<div class="font-label-lg text-on-surface font-medium">Royal Bridal Edit</div>
+<div class="font-body-sm text-on-surface-variant">Handcrafted in Nagpur</div>
+</div>
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: SERVICES / PROGRAMS -->
+<section class="w-full bg-surface-container-low py-space-xl px-gutter" id="collections">
+<div class="max-w-7xl mx-auto flex flex-col items-center">
+<div class="text-center max-w-2xl mb-space-xl reveal-on-scroll revealed">
+<span class="text-[20px] font-bold text-primary uppercase tracking-wider block mb-space-xs">Curated Collections</span>
+<h2 class="font-headline-xl text-on-surface font-black text-[48px] leading-[56px]" style="font-size: 56px !important; line-height: 64px !important; font-weight: 900 !important; color: rgb(17, 17, 17) !important;">Explore Our Exclusive Collection Of Premium Designer Garments For Every Celebration</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md w-full">
+<!-- Item 1 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Close up of a royal bridal silk saree featuring heavy gold zari brocade, rich maroon hues, and intricate traditional motifs shot in clean studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcxhwdVj7Dphl2kmU3uuZEc3JEYBgvQo9gg2mxnokHAj1Pz9np9tGN1ggkABjfhB5ado0WpaXXD7EwkFp5zIBB1KL0oXo7RRHo9YrJPWfZc1GC0WAH7kLtCt_3NdhPO7GO-A3mzGfvGOS_JgzHcGwYXUbnwlgVym3XpYVj7pmlGR2yI2tk9iupEJAzjN1edFxsSQhw7vnpI06wavE4sySXdg_6uyC43mjBsVioqaGW">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Royal Elegance</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Royal Bridal Sarees</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Drape yourself in authentic Kanjeevaram and Banarasi masterpieces. Woven with pure mulberry silk and genuine gold threads. Handcrafted by master artisans for your once-in-a-lifetime moments.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">500+ Designs</span>
+<span class="font-body-sm text-on-surface-variant">100% Pure Silk</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="An elegant Indian groom wearing a sophisticated embroidered sherwani in cream and gold tones, posing against a neutral architectural backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDqEiTLKlE_SkpiYFbBjP21ozIGWxum3LrOeHkdoBciZG6ABkpCc1j38WL2BbIDtDOvoqCywSb3q9EMbWdLps9yslkEVOzlACCttziOyVrQohGhpXeUgzLilKsBvLZj35aG606cW2214LItKx8K5hX1cY8mXgRO-KArrSIPMvTrb_SSzUHtZ7U44Q7zZcKvZ8VUGcyPRpp8N1TmJ-ZunHlM00DsDBuiIwCAR1osdVQ">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Regal Groomswear</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Designer Sherwanis</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Command attention with our bespoke sherwanis tailored for modern grooms. Featuring intricate thread work, zardozi accents, and royal silhouettes. Experience supreme comfort paired with majestic aesthetics.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">200+ Styles</span>
+<span class="font-body-sm text-on-surface-variant">Custom Tailored</span>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Vibrant festive kurta sets displayed in a luxury boutique setting with rich lighting highlighting the intricate embroidery and pastel color palettes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFirb5E1NyVXlXB3fmOUAQY8V1OmHtygoLIzKU4vcKR4iTnEze2IVwzXN3jK-CJAKJU66YNk6RkOV3JVWwGhXYHw4RR-82eSPry4AFXaocEFsYPBcvOIaKZSezBJHCcdTV-V_NThVSAIt9q_jslDrtEZpoOVTJlwQdkFmvXoBWp6px0Y9DSJOca9SudH3pNf_3PtWAkhjPZ80D9ec04wIQvwiK2ztJ2BzXWkjLGnT-">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Festive Vibrance</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Festive Kurta Sets</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Celebrate every festival with effortless grace and vibrant colors. Crafted from breathable chanderi and breathable cotton-silks. Detailed with delicate mirror work and block prints.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">350+ Options</span>
+<span class="font-body-sm text-on-surface-variant">Breathable Weaves</span>
+</div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A magnificent lehenga choli set featuring multi-colored thread embroidery and sequin embellishments on rich velvet fabric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjNI8GPSM4xrqT8hx7XktOqqLevY0ycfrvWK5rMGz-84qSBo6Z604TQG7R1AOWH4m5sEnK8shcvMKzjyA0RGzUHtM15P3XnYqpVCWwt5WBZurwcvNryJcid7YuWghyjb4ko7zDl3tSNsJ_xWx6xLllcAgZQehC0LITxHB326IDNwjt0kwh9vauIQUy6gfB4B73Ho9_5Vzal8F-Ql3o2DWrZ2cs3gnIF3uhsGw8R0Ko">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Handcrafted Luxury</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Handcrafted Lehengas</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Mesmerize the crowd with our signature lehengas featuring rich flare and intricate hand-embroidery. Built with premium georgette, velvet, and organza layers. Designed to make your celebrations unforgettable.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">150+ Designs</span>
+<span class="font-body-sm text-on-surface-variant">Hand Embroidered</span>
+</div>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Casual contemporary ethnic wear for modern women blending traditional block prints with modern silhouette cuts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD40-uKqFQoiLTOP9XkHk45DfmwPMDvE1vZs-57LvKhY1m6PYGanvlL0nh59-MY39uBKMra30oVw_CLxD5UbbFV_Sq1ktbD0oykIff9DHHVh1YI9mdsTKyNt7jn9S51YesTp-abL0sIu4DX3KgKDps3hvSnSe0pVCQ_giCZ7hy5zi7l5t1XFrR8i3u6krmzaU7wp5hr4l0fNqH8BGNSC2-EzlKHbxubMzn0sR6JJ_Xa">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Everyday Ethnic</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Casual Ethnic Wear</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Elevate your daily ethnic wardrobe with chic fusion tunics and lightweight kurtis. Made from soft modal cotton and organic linen blends. Perfect for office wear and intimate daytime gatherings.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">400+ Styles</span>
+<span class="font-body-sm text-on-surface-variant">Pure Cotton</span>
+</div>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Indo-Western suit in deep navy blue with sharp modern tailoring and subtle ethnic lapel embroidery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAc9eI-hIr8O-zlv7v7q-bv6a7x1Q4f_2q0tdVcSVcvvXRClRoZtDjld62xdQFLYOVCiUTegJEBRLQJy3HpXnKzcEX7_jciiBXo9-LWHAGtSQDzoOIAYz7V3dftV2193NiqiJ8xea2wKCKueYSIkEbaabtEkSuKvuBya6DjidWblv0p4zqz2SMePjQg8FURMVd81YUD3J-gLrAuEGrCslBvzosPEcxRamXT4zXxBy_">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Modern Fusion</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Indo-Western Suits</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Blend contemporary western cuts with traditional Indian sensibilities seamlessly. Tailored with precision European fabrics and subtle ethnic detailing. Ideal for cocktail parties and receptions.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">120+ Styles</span>
+<span class="font-body-sm text-on-surface-variant">Precision Cut</span>
+</div>
+</div>
+</div>
+<!-- Item 7 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Cute traditional festive wear for children including miniature sherwanis and colorful lehengas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9uf_Fmk_SbDLNEPQxq4nwixvUTpk0DYkljpQKIJhvzJ_8gjgtHVnSwMsYBiMA04yvrxkRjZVKHSGkgVZ9GJt2xD4a7sgw-1Zs0DNfDSyFLHeuW-3RptTiWvz49U-N6PJeNPYeSWNDP4XHtmGfOr7S-OKkSNYp9yfn7brqARKZcCxHTYz2pdMO5JMmktX9pjDqsz-NuLbJ-gQgiu5Hg3eoThIalgxXKKNZ-oOD8aYy">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Little Celebrations</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Kids Festive Wear</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Adorable ethnic outfits designed with child-safe soft linings and lightweight fabrics. Vibrant lehengas, cute dhoti kurta sets, and mini sherwanis. Ensuring your little ones stay comfortable while looking festive.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">180+ Options</span>
+<span class="font-body-sm text-on-surface-variant">Skin-Friendly</span>
+</div>
+</div>
+</div>
+<!-- Item 8 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Traditional Indian ethnic accessories including ornate kalgi, mojaris, pocket squares, and pearl necklaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw-OJ7vOY6Q_8EPqhKln4jqCo91P-txg9N9Pc8n9nrCMbq23dKfCSF5Or1ZSRF0ZFXFR_1JiZM_0XTPNOGhkD9AGWRU8PJsNeBHwV4oC3bLHe74n4d_zJF4fLOvfYUUM1pJBlacsXEhowx0WrCxkS5LUDFxb6517tJ-AQ26v69UuR5OOaz3CBTNWDmSyBDZz2B3vTHO0LQAuvDxxz8X1sQE1rwY2_bM_L63K6WLmdO">
+<div class="absolute top-3 left-3 bg-surface/90 px-3 py-1 rounded-full text-label-md text-on-surface shadow-sm">Exquisite Finishes</div>
+</div>
+<div class="p-space-md flex flex-col flex-grow justify-between gap-space-md">
+<div>
+<h3 class="font-headline-md text-on-surface mb-space-xs transition-colors group-hover:text-primary" style="font-size: 20px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Premium Accessories</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 15px !important; line-height: 22px !important; font-weight: 500 !important; color: rgb(34, 34, 34) !important;">Complete your traditional look with our curated range of ceremonial accessories. Featuring handcrafted mojaris, royal safas, pocket squares, and pearl malas. Designed to add the finishing touch of majesty.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-surface-variant/20">
+<span class="font-label-md text-primary font-medium">300+ Items</span>
+<span class="font-body-sm text-on-surface-variant">Handcrafted</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: WHY US / USP SECTION -->
+<section id="why-us" class="w-full bg-surface py-space-xl px-gutter">
+<div class="max-w-7xl mx-auto flex flex-col items-center">
+<div class="text-center max-w-2xl mb-space-xl reveal-on-scroll revealed">
+<span class="text-2xl font-black text-primary uppercase tracking-wider block mb-space-xs">The Vastralaya Difference</span>
+<h2 class="font-headline-xl text-on-surface font-black text-[48px] leading-[56px]">Discover Why Nagpur Families Choose Vastralaya For Their Milestone Celebrations</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg w-full">
+<!-- USP 1 -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm transition-transform duration-300 hover:shadow-md reveal-on-scroll revealed">
+<div class="flex items-center justify-between">
+<span class="text-label-md text-primary uppercase tracking-wider font-medium">Uncompromised Fabric Purity</span>
+<span class="font-headline-lg text-primary/40">01</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center">
+<div class="md:col-span-5 h-48 rounded-lg overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Close up of artisan hands inspecting pure silk textile quality under natural daylight in a traditional Indian workshop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBteXzo2GhRSXqQ2Qlz-LswIfF6nUuc2AvykCF5j6fnZOWTq4yHyMHRFrDbncry56NOjvZ6ykfDyRncj8JiXEWmLr5YP7EN0RcJ5ZsVe8FV3KLscpdA64Su9eqroraJhJzBNQYPyB7phw8tMzcYMfzpAUSPuYQ0v4OubNcQT8uks7YycD5Sto27tssWXvds5f52-Ngmhmh205_6_SC1xECxi6BqnOdT6WjWMPwjhDK1">
+</div>
+<div class="md:col-span-7 flex flex-col gap-space-sm">
+<h3 class="font-headline-md text-on-surface" style="font-size: 22px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Uncompromised Fabric Purity</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">We source directly from generational handloom weavers across India to ensure absolute material authenticity. Every meter of silk, organza, and cotton undergoes stringent quality checks before entering our store. You receive only genuine handwoven luxury that lasts a lifetime.</p>
+<div class="flex items-center gap-space-md pt-space-xs">
+<div>
+<div class="font-headline-md text-primary">100%</div>
+<div class="font-body-sm text-on-surface-variant">Certified Pure</div>
+</div>
+<div class="w-[1px] h-8 bg-surface-variant"></div>
+<div>
+<div class="font-headline-md text-primary">50+</div>
+<div class="font-body-sm text-on-surface-variant">Weaver Clusters</div>
+</div>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant italic pt-space-xs border-t border-surface-variant/20" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Authentic heritage weaves sourced directly from master artisans nationwide.</p>
+</div>
+<!-- USP 2 -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm transition-transform duration-300 hover:shadow-md reveal-on-scroll revealed">
+<div class="flex items-center justify-between">
+<span class="text-label-md text-primary uppercase tracking-wider font-medium">Master Tailoring Expertise</span>
+<span class="font-headline-lg text-primary/40">02</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center">
+<div class="md:col-span-5 h-48 rounded-lg overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Master tailor in Nagpur carefully measuring and stitching a bespoke ethnic sherwani with precision and care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl-IkWXkb7pdtICk8B0SsHluQ98G_XP7K_JmPbYKcwRrzZbtsLbZvloVPEnDom7yUUvMYeg0pvD5P7scaKMv0Ij-hFC-h0Q960HYQ0EkkKFN3VIKenBut1BqDBRmmMgmUyleHsAmoNUanCXL941SREV6OfxZOqtvrxFYuSmBNYjIsd-ZdqrnCLuL8PptQ5_6G9JBesFKISfpUTtIWJzZ_NHYD6euTO1ro5J-YkEvvq">
+</div>
+<div class="md:col-span-7 flex flex-col gap-space-sm">
+<h3 class="font-headline-md text-on-surface" style="font-size: 22px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Master Tailoring Expertise</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Our in-house master craftsmen bring decades of bespoke tailoring experience to every single fitting. We understand body contours and garment Fall to deliver immaculate silhouette symmetry. Experience custom alterations that feel like a second skin.</p>
+<div class="flex items-center gap-space-md pt-space-xs">
+<div>
+<div class="font-headline-md text-primary">25+ Yrs</div>
+<div class="font-body-sm text-on-surface-variant">Master Artisans</div>
+</div>
+<div class="w-[1px] h-8 bg-surface-variant"></div>
+<div>
+<div class="font-headline-md text-primary">99.8%</div>
+<div class="font-body-sm text-on-surface-variant">Perfect Fit Rate</div>
+</div>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant italic pt-space-xs border-t border-surface-variant/20" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Immaculate bespoke tailoring crafted for your exact body measurements.</p>
+</div>
+<!-- USP 3 -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm transition-transform duration-300 hover:shadow-md reveal-on-scroll revealed">
+<div class="flex items-center justify-between">
+<span class="text-label-md text-primary uppercase tracking-wider font-medium">Exclusive Designer Collections</span>
+<span class="font-headline-lg text-primary/40">03</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center">
+<div class="md:col-span-5 h-48 rounded-lg overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Exclusive luxury ethnic garments displayed elegantly on racks in a premium Nagpur boutique." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDAleSV8z5dJD-mAXRn6smjZwChqLAE7QVU5KiEqcH3n0o9evLPx9VJrq6z92adaI9PDHP4QomorfEXp0RVK_-zVJzfH4puO-le1x5O8ASbKb779ZNHd0TNk3G1l3gQYitnHmdogjYbseZRt-7fJgkZA7PBJzluVtTm73fUCCsxZW5lyLVgI6oT1p9qSBnr_dNBFFqwhR_-Cq9Q1WBsyzkDGFxMYJCiSJD9Fdi4YKA">
+</div>
+<div class="md:col-span-7 flex flex-col gap-space-sm">
+<h3 class="font-headline-md text-on-surface" style="font-size: 22px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Exclusive Designer Collections</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Stay ahead of festive trends with our limited-edition seasonal capsules curated by top fashion designers. Each design is produced in exclusive quantities to ensure unique style statements. Stand out at every wedding and social celebration.</p>
+<div class="flex items-center gap-space-md pt-space-xs">
+<div>
+<div class="font-headline-md text-primary">Weekly</div>
+<div class="font-body-sm text-on-surface-variant">New Arrivals</div>
+</div>
+<div class="w-[1px] h-8 bg-surface-variant"></div>
+<div>
+<div class="font-headline-md text-primary">Limited</div>
+<div class="font-body-sm text-on-surface-variant">Edition Pieces</div>
+</div>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant italic pt-space-xs border-t border-surface-variant/20" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Limited edition designer pieces curated exclusively for Nagpur's elite.</p>
+</div>
+<!-- USP 4 -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col justify-between gap-space-md shadow-sm transition-transform duration-300 hover:shadow-md reveal-on-scroll revealed">
+<div class="flex items-center justify-between">
+<span class="text-label-md text-primary uppercase tracking-wider font-medium">Personalized Styling Sessions</span>
+<span class="font-headline-lg text-primary/40">04</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center">
+<div class="md:col-span-5 h-48 rounded-lg overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A professional fashion consultant assisting a customer with color palettes and styling in a private boutique lounge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8JkYfLTbkilfToU3JsdKhL5eKiDXFg3949Jmw4lnPxsHzCqI8yCow3sG2IlW_-gXajrvJqeVUYuEBh8XpjL4khKCO-bAKE3f_vZoptLUnOzs2ENPecealpLz9VVr9drw2oEKainQAhALrzLaLbEUzRFJ1PX7hH8PQGUOBzcATU46N_5jjkbgshwwCeAPOGgjG2_SgeWWJMFeWC7y7gCYzHeaeWBCgt_fqZGXSsEll">
+</div>
+<div class="md:col-span-7 flex flex-col gap-space-sm">
+<h3 class="font-headline-md text-on-surface" style="font-size: 22px !important; font-weight: 700 !important; color: rgb(0, 0, 0) !important;">Personalized Styling Sessions</h3>
+<p class="font-body-sm text-on-surface-variant" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Enjoy a private, VIP styling consultation tailored to your specific celebratory theme and skin tone. Our expert stylists guide you through color pairing, accessory matching, and complete trousseau planning. Experience stress-free shopping in total comfort.</p>
+<div class="flex items-center gap-space-md pt-space-xs">
+<div>
+<div class="font-headline-md text-primary">1-on-1</div>
+<div class="font-body-sm text-on-surface-variant">Expert Guidance</div>
+</div>
+<div class="w-[1px] h-8 bg-surface-variant"></div>
+<div>
+<div class="font-headline-md text-primary">Free</div>
+<div class="font-body-sm text-on-surface-variant">VIP Consultations</div>
+</div>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant italic pt-space-xs border-t border-surface-variant/20" style="font-size: 16px !important; line-height: 26px !important; font-weight: 500 !important; color: rgb(24, 24, 24) !important;">Dedicated personal styling consultants for your perfect wedding trousseau.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: ABOUT US -->
+<section id="about" class="w-full bg-surface py-space-xl px-gutter">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center reveal-on-scroll revealed">
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm">
+<img alt="Vastralaya Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaxZGZMf_jIATFeYaY66vD-LrbFNWcDirS9LhOmIC3t9ab9-HnE8tRgCM7wXL7jU8PvrB2a0W3vHp9Z4-2ADWaLr5E4VlIHSLbIClAuJlA5rV_pV16DYlVUYFXu9jpFzikQ18Kr0ZOY2sbbtC41e-p47TVOnM-PuGtuQsZE8rHgqH1Rjlo2iFrFZyiQuxupohEdlwfxvzh7uVuU0EtPvvQavVgaD642Zrqj-FS46kR">
+<span class="font-headline-md text-on-surface tracking-tight uppercase"><span style="font-family: Newsreader, serif; font-style: italic; font-weight: 600; letter-spacing: 0.4px; background-color: rgba(252, 249, 248, 0.8);">Vastralaya</span></span>
+</div>
+<span class="text-label-lg text-primary uppercase tracking-wider block">Our Heritage</span>
+<h2 class="font-headline-lg text-on-surface font-bold text-[28px]">Decades of Elegance in Nagpur</h2>
+<p class="font-body-md text-on-surface-variant text-[18px]">
+Founded with a profound passion for authentic Indian textiles, Vastralaya has stood as Nagpur's premier ethnic fashion destination for over 25+ years. Having delighted over 10,000 brides, we collaborate directly with 50+ master weaver clusters across India to bring you uncompromised fabric purity and exquisite bespoke tailoring.
+</p>
+</div>
+<div class="lg:col-span-6 relative h-[400px] rounded-xl overflow-hidden shadow-md group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Interior view of Vastralaya boutique in Nagpur featuring exquisite traditional sarees and luxurious ethnic wear displays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDAleSV8z5dJD-mAXRn6smjZwChqLAE7QVU5KiEqcH3n0o9evLPx9VJrq6z92adaI9PDHP4QomorfEXp0RVK_-zVJzfH4puO-le1x5O8ASbKb779ZNHd0TNk3G1l3gQYitnHmdogjYbseZRt-7fJgkZA7PBJzluVtTm73fUCCsxZW5lyLVgI6oT1p9qSBnr_dNBFFqwhR_-Cq9Q1WBsyzkDGFxMYJCiSJD9Fdi4YKA">
+<div class="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md p-4 rounded-lg flex items-center justify-between">
+<div>
+<div class="font-label-lg text-on-surface font-medium">Heritage Nagpur Boutique</div>
+<div class="font-body-sm text-on-surface-variant">Crafting timeless milestones since decades</div>
+</div>
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: CTA SECTION -->
+<section class="w-full bg-surface-container-low py-space-xl px-gutter text-center reveal-on-scroll revealed">
+<div class="max-w-3xl mx-auto flex flex-col items-center gap-space-md">
+<span class="text-label-lg text-primary uppercase tracking-wider text-lg font-bold">Connect With Us</span>
+<h2 class="font-headline-lg text-on-surface text-3xl font-black">Experience The Finest Traditional Indian Ethnic Wear Collection Today</h2>
+<p class="font-body-md text-on-surface-variant">Ready to find your dream wedding attire or festive look? Reach out directly to our expert stylists via WhatsApp.</p>
+<div class="pt-space-xs">
+<a class="bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container transition-all px-8 py-4 rounded-lg font-label-lg inline-flex items-center gap-space-sm shadow-md btn-ripple" href="https://wa.me/+919876543210?text=Hi,%20I%20saw%20your%20demo%20website%20and%20want%20to%20know%20more%20about%20your%20web%20development%20services." rel="noopener noreferrer" style="background-color: rgb(37, 211, 102) !important; color: white !important;" target="_blank"><span class="material-symbols-outlined">chat</span>
+            Chat on WhatsApp</a>
+</div>
+</div>
+</section>
+<!-- SECTION 6: FOUNDER SECTION -->
+<section id="founder" class="w-full bg-surface py-space-xl px-gutter">
+<div class="max-w-7xl mx-auto flex flex-col items-center">
+<div class="text-center max-w-2xl mb-space-xl reveal-on-scroll revealed">
+<span class="text-label-lg text-primary uppercase tracking-wider block mb-space-xs">Leadership &amp; Vision</span>
+<h2 class="font-headline-lg text-on-surface font-bold text-4xl font-black text-primary" style="color: black !important;">Meet Our Founder</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center mb-space-xl">
+<div class="lg:col-span-5 relative h-[450px] rounded-xl overflow-hidden shadow-xl reveal-on-scroll group revealed">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Professional Indian female founder portrait smiling warmly inside her luxury ethnic boutique." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8JkYfLTbkilfToU3JsdKhL5eKiDXFg3949Jmw4lnPxsHzCqI8yCow3sG2IlW_-gXajrvJqeVUYuEBh8XpjL4khKCO-bAKE3f_vZoptLUnOzs2ENPecealpLz9VVr9drw2oEKainQAhALrzLaLbEUzRFJ1PX7hH8PQGUOBzcATU46N_5jjkbgshwwCeAPOGgjG2_SgeWWJMFeWC7y7gCYzHeaeWBCgt_fqZGXSsEll">
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md p-4 rounded-lg flex items-center justify-between">
+<div>
+<div class="font-label-lg text-on-surface font-medium">Founder &amp; Designer</div>
+<div class="font-body-sm text-on-surface-variant">Guiding traditional ethnic wear craftsmanship daily</div>
+</div>
+<span class="material-symbols-outlined text-primary">star</span>
+</div>
+</div>
+<div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-space-md reveal-on-scroll revealed">
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Years of Dedication</h3>
+<p class="font-body-sm text-on-surface-variant">Leading boutique operations for over <strong>25+ Years</strong> with unwavering commitment.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Delighted Brides Served</h3>
+<p class="font-body-sm text-on-surface-variant">Successfully styled over <strong>10,000+ Brides</strong> for their most memorable milestone celebrations.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Trusted Weaver Networks</h3>
+<p class="font-body-sm text-on-surface-variant">Partnered directly with <strong>50+ Weaver</strong> clusters across India for authentic pure materials.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Immaculate Fit Rate</h3>
+<p class="font-body-sm text-on-surface-variant">Achieved an exceptional <strong>99.8% Perfect Fit</strong> rating through expert in-house master tailoring.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Exclusive Design Options</h3>
+<p class="font-body-sm text-on-surface-variant">Curated collection featuring over <strong>500+ Unique</strong> designer sarees and royal ethnic styles.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Private Styling Lounges</h3>
+<p class="font-body-sm text-on-surface-variant">Maintains <strong>100% Dedicated</strong> personal styling consultations for stress-free trousseau shopping.</p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm md:col-span-2 font-bold transition-all hover:shadow-md hover:-translate-y-1">
+<h3 class="font-headline-md text-primary mb-1">Milestone Celebration Trust</h3>
+<p class="font-body-sm text-on-surface-variant">Built upon <strong>5 Decades</strong> of multigenerational family trust in Nagpur's ethnic fashion market.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 7: PHOTO GALLERY – SUCCESS STORIES -->
+<section class="w-full bg-surface-container-low py-space-xl px-gutter" id="gallery">
+<div class="max-w-7xl mx-auto flex flex-col items-center">
+<div class="text-center max-w-2xl mb-space-xl reveal-on-scroll revealed"><span class="text-lg text-primary uppercase tracking-wider block mb-space-xs font-black">Success Stories</span>
+<h2 class="font-headline-lg text-on-surface font-black text-3xl">Explore Our Exclusive Success Stories Photo Gallery</h2></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md w-full">
+<!-- Photo 1 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Indian bride smiling joyfully in Nagpur wearing a radiant crimson Kanjeevaram silk saree." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMTtUauENagcooYxlUWuYk5XX64gt85a3dexy-uBAW1mA5IlYNuyLCqoAxHImvZ0EA-D1j8X-02GiaF8V4ZmBUTj6whXvjLJO6ROoJPqlmOpnSNbn71Wp3S2xAhmSUn9Hy9zSYw7HTO2z_cblUhBSPN-L2pyro-NgcJHKkmRKQCrHSmRuIAk27xX3MXcnbl3koI-CZYe5A_9JHJ7gAc5AdoOkj0bMFKHj9o89kppJ6">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 2 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Indian groom in Nagpur wearing an elegant embroidered sherwani with zardozi work." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDqEiTLKlE_SkpiYFbBjP21ozIGWxum3LrOeHkdoBciZG6ABkpCc1j38WL2BbIDtDOvoqCywSb3q9EMbWdLps9yslkEVOzlACCttziOyVrQohGhpXeUgzLilKsBvLZj35aG606cW2214LItKx8K5hX1cY8mXgRO-KArrSIPMvTrb_SSzUHtZ7U44Q7zZcKvZ8VUGcyPRpp8N1TmJ-ZunHlM00DsDBuiIwCAR1osdVQ">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 3 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Vibrant festive celebration gathering in Nagpur with family members in colorful ethnic wear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFirb5E1NyVXlXB3fmOUAQY8V1OmHtygoLIzKU4vcKR4iTnEze2IVwzXN3jK-CJAKJU66YNk6RkOV3JVWwGhXYHw4RR-82eSPry4AFXaocEFsYPBcvOIaKZSezBJHCcdTV-V_NThVSAIt9q_jslDrtEZpoOVTJlwQdkFmvXoBWp6px0Y9DSJOca9SudH3pNf_3PtWAkhjPZ80D9ec04wIQvwiK2ztJ2BzXWkjLGnT-">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 4 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Stunning lehenga choli set with exquisite embroidery worn by a happy customer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjNI8GPSM4xrqT8hx7XktOqqLevY0ycfrvWK5rMGz-84qSBo6Z604TQG7R1AOWH4m5sEnK8shcvMKzjyA0RGzUHtM15P3XnYqpVCWwt5WBZurwcvNryJcid7YuWghyjb4ko7zDl3tSNsJ_xWx6xLllcAgZQehC0LITxHB326IDNwjt0kwh9vauIQUy6gfB4B73Ho9_5Vzal8F-Ql3o2DWrZ2cs3gnIF3uhsGw8R0Ko">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 5 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Personal styling session inside a private Nagpur boutique lounge with expert consultants." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8JkYfLTbkilfToU3JsdKhL5eKiDXFg3949Jmw4lnPxsHzCqI8yCow3sG2IlW_-gXajrvJqeVUYuEBh8XpjL4khKCO-bAKE3f_vZoptLUnOzs2ENPecealpLz9VVr9drw2oEKainQAhALrzLaLbEUzRFJ1PX7hH8PQGUOBzcATU46N_5jjkbgshwwCeAPOGgjG2_SgeWWJMFeWC7y7gCYzHeaeWBCgt_fqZGXSsEll">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 6 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Master artisan meticulously weaving fine silk threads in a traditional workshop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBteXzo2GhRSXqQ2Qlz-LswIfF6nUuc2AvykCF5j6fnZOWTq4yHyMHRFrDbncry56NOjvZ6ykfDyRncj8JiXEWmLr5YP7EN0RcJ5ZsVe8FV3KLscpdA64Su9eqroraJhJzBNQYPyB7phw8tMzcYMfzpAUSPuYQ0v4OubNcQT8uks7YycD5Sto27tssWXvds5f52-Ngmhmh205_6_SC1xECxi6BqnOdT6WjWMPwjhDK1">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 7 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Indo-Western suit in deep navy blue with sharp modern tailoring on a customer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAc9eI-hIr8O-zlv7v7q-bv6a7x1Q4f_2q0tdVcSVcvvXRClRoZtDjld62xdQFLYOVCiUTegJEBRLQJy3HpXnKzcEX7_jciiBXo9-LWHAGtSQDzoOIAYz7V3dftV2193NiqiJ8xea2wKCKueYSIkEbaabtEkSuKvuBya6DjidWblv0p4zqz2SMePjQg8FURMVd81YUD3J-gLrAuEGrCslBvzosPEcxRamXT4zXxBy_">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 8 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Traditional Indian ethnic accessories including mojaris and pearl necklaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw-OJ7vOY6Q_8EPqhKln4jqCo91P-txg9N9Pc8n9nrCMbq23dKfCSF5Or1ZSRF0ZFXFR_1JiZM_0XTPNOGhkD9AGWRU8PJsNeBHwV4oC3bLHe74n4d_zJF4fLOvfYUUM1pJBlacsXEhowx0WrCxkS5LUDFxb6517tJ-AQ26v69UuR5OOaz3CBTNWDmSyBDZz2B3vTHO0LQAuvDxxz8X1sQE1rwY2_bM_L63K6WLmdO">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+<!-- Photo 9 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group reveal-on-scroll transform hover:-translate-y-1.5 revealed">
+<div class="relative h-72 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Interior view of Vastralaya heritage flagship boutique in Nagpur." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDAleSV8z5dJD-mAXRn6smjZwChqLAE7QVU5KiEqcH3n0o9evLPx9VJrq6z92adaI9PDHP4QomorfEXp0RVK_-zVJzfH4puO-le1x5O8ASbKb779ZNHd0TNk3G1l3gQYitnHmdogjYbseZRt-7fJgkZA7PBJzluVtTm73fUCCsxZW5lyLVgI6oT1p9qSBnr_dNBFFqwhR_-Cq9Q1WBsyzkDGFxMYJCiSJD9Fdi4YKA">
+</div>
+<div class="p-space-md flex flex-col gap-space-xs"><span class="text-label-lg text-primary uppercase tracking-wider font-bold text-[18px]">Royal Bridal Radiance</span>
+<p class="font-body-md text-on-surface font-semibold text-[16px]">Radiant Nagpur bride draped in our custom handwoven silk saree.</p></div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 8: TESTIMONIALS -->
+<section id="testimonials" class="w-full bg-surface py-space-xl px-gutter">
+<div class="max-w-7xl mx-auto flex flex-col items-center">
+<div class="text-center max-w-2xl mb-space-xl reveal-on-scroll revealed">
+<span class="text-label-lg text-primary uppercase tracking-wider block mb-space-xs">Customer Testimonials</span>
+<h2 class="font-headline-lg text-on-surface font-bold text-4xl">What Our Valued Customers Say About Us</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md w-full">
+<!-- Testimonial 1 -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between gap-space-md reveal-on-scroll transform hover:-translate-y-1 revealed">
+<div class="flex flex-col gap-space-sm">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<p class="font-body-md text-on-surface font-medium leading-relaxed">"Vastralaya made my wedding shopping an absolute dream come true. I purchased my bridal Kanjeevaram saree and received endless compliments from all 500+ guests attending. Their 25+ years of heritage truly reflect in their impeccable fabric quality and warm service."</p>
+</div>
+<div>
+<div class="flex items-center gap-space-xs"><span class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">person</span><div class="font-headline-md text-on-surface font-medium">Priya Deshmukh</div></div>
+<div class="font-body-sm text-on-surface-variant">Civil Lines, Nagpur</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between gap-space-md reveal-on-scroll transform hover:-translate-y-1 revealed">
+<div class="flex flex-col gap-space-sm">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<p class="font-body-md text-on-surface font-medium leading-relaxed">"As a groom, finding the right sherwani with a precise fit was daunting until I visited Vastralaya. Their in-house master tailors delivered a 99.8% flawless fit on the very first trial. I felt like royalty throughout my 3-day wedding celebration!"</p>
+</div>
+<div>
+<div class="flex items-center gap-space-xs"><span class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">person</span><div class="font-headline-md text-on-surface font-medium">Rahul Kulkarni</div></div>
+<div class="font-body-sm text-on-surface-variant">Dharampeth, Nagpur</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between gap-space-md reveal-on-scroll transform hover:-translate-y-1 revealed">
+<div class="flex flex-col gap-space-sm">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<p class="font-body-md text-on-surface font-medium leading-relaxed">"We have been shopping at Vastralaya for over 3 generations for all our family festivities. Their collection of 500+ unique designer sarees and pure silk fabrics is unmatched anywhere else in Central India. Highly recommended for every milestone."</p>
+</div>
+<div>
+<div class="flex items-center gap-space-xs"><span class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">person</span><div class="font-headline-md text-on-surface font-medium">Sunita Rathi</div></div>
+<div class="font-body-sm text-on-surface-variant">Laxmi Nagar, Nagpur</div>
+</div>
+</div>
+<!-- Testimonial 4 -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between gap-space-md reveal-on-scroll transform hover:-translate-y-1 revealed">
+<div class="flex flex-col gap-space-sm">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<p class="font-body-md text-on-surface font-medium leading-relaxed">"The personal styling consultation session was an absolute game changer for my trousseau shopping. The expert stylist helped me pair matching accessories and color palettes effortlessly. Thank you for serving over 10k brides with such dedication!"</p>
+</div>
+<div>
+<div class="flex items-center gap-space-xs"><span class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">person</span><div class="font-headline-md text-on-surface font-medium">Ananya Joshi</div></div>
+<div class="font-body-sm text-on-surface-variant">Bajaj Nagar, Nagpur</div>
+</div>
+</div>
+<!-- Testimonial 5 -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between gap-space-md reveal-on-scroll transform hover:-translate-y-1 revealed">
+<div class="flex flex-col gap-space-sm">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<p class="font-body-md text-on-surface font-medium leading-relaxed">"Finding premium kids festive wear that is soft on skin and traditional looking was so easy here. My 6-year-old son wore their mini sherwani and stayed completely comfortable throughout the reception. Outstanding quality and customer care!"</p>
+</div>
+<div>
+<div class="flex items-center gap-space-xs"><span class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">person</span><div class="font-headline-md text-on-surface font-medium">Vikram Joshi</div></div>
+<div class="font-body-sm text-on-surface-variant">Ramdaspeth, Nagpur</div>
+</div>
+</div>
+<!-- Testimonial 6 -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between gap-space-md reveal-on-scroll transform hover:-translate-y-1 revealed">
+<div class="flex flex-col gap-space-sm">
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="material-symbols-outlined text-[20px]">star</span>
+</div>
+<p class="font-body-md text-on-surface font-medium leading-relaxed">"Their direct partnership with 50+ weaver clusters truly shows in the rich texture of their handloom lehengas. The store ambiance in Nagpur is luxurious, and the staff treats every visitor like family. Worth every single rupee!"</p>
+</div>
+<div>
+<div class="flex items-center gap-space-xs"><span class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center material-symbols-outlined text-[14px]">person</span><div class="font-headline-md text-on-surface font-medium">Meenakshi Pande</div></div>
+<div class="font-body-sm text-on-surface-variant">Sadar, Nagpur</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 9: QUOTE SECTION -->
+<section class="w-full bg-surface-container-low py-space-xl px-gutter text-center reveal-on-scroll revealed">
+<div class="max-w-4xl mx-auto flex flex-col items-center gap-space-md">
+<span class="material-symbols-outlined text-primary text-[48px] animate-pulse">format_quote</span>
+<blockquote class="font-headline-xl text-3xl font-bold text-on-surface not-italic">
+"True elegance is never out of fashion; it is woven with patience, preserved through generations of master craftsmanship, and worn with quiet pride on life's most sacred milestones."
+</blockquote>
+<div class="flex flex-col items-center gap-space-xs pt-space-xs">
+<cite class="font-headline-md text-primary not-italic font-bold text-xl">Vatsala Sharma</cite>
+<span class="font-body-sm text-on-surface-variant">Founder &amp; Principal Designer, Vastralaya Nagpur</span>
+</div>
+</div>
+</section>
+<!-- SECTION 10: FINAL INFO BLOCK -->
+<section id="contact" class="w-full bg-surface py-space-xl px-gutter">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-lg">
+<!-- Column 1: Services -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md reveal-on-scroll transition-transform hover:-translate-y-1 revealed">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary">checkroom</span>
+<h3 class="font-headline-md text-on-surface">Our Services</h3>
+</div>
+<ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant">
+<li>• Royal Bridal Sarees (500+ Designs)</li>
+<li>• Designer Sherwanis (200+ Styles)</li>
+<li>• Festive Kurta Sets (350+ Options)</li>
+<li>• Handcrafted Lehengas (150+ Designs)</li>
+<li>• Casual Ethnic Wear (400+ Styles)</li>
+<li>• Indo-Western Suits (120+ Styles)</li>
+<li>• Kids Festive Wear &amp; Accessories</li>
+</ul>
+</div>
+<!-- Column 2: USPs -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md reveal-on-scroll transition-transform hover:-translate-y-1 revealed">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary">verified</span>
+<h3 class="font-headline-md text-on-surface">Core USPs</h3>
+</div>
+<ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant">
+<li>• 100% Certified Pure Fabrics</li>
+<li>• Direct Sourcing from 50+ Weavers</li>
+<li>• Master Tailoring Expertise (25+ Years)</li>
+<li>• 99.8% Perfect Fit Guarantee</li>
+<li>• Exclusive Limited Edition Collections</li>
+<li>• Complimentary 1-on-1 VIP Styling</li>
+</ul>
+</div>
+<!-- Column 3: Achievements -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md reveal-on-scroll transition-transform hover:-translate-y-1 revealed">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary">military_tech</span>
+<h3 class="font-headline-md text-on-surface">Key Achievements</h3>
+</div>
+<ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant">
+<li>• 50+ Years of Generational Trust</li>
+<li>• 10,000+ Happy Brides Styled</li>
+<li>• 5 Decades in Nagpur Market</li>
+<li>• 25+ Years Flagship Boutique</li>
+<li>• Central India's Premier Destination</li>
+<li>• Multigenerational Family Clientele</li>
+</ul>
+</div>
+<!-- Column 4: Contact & Demo Info -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md reveal-on-scroll transition-transform hover:-translate-y-1 revealed">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary">storefront</span>
+<h3 class="font-headline-md text-on-surface">Boutique Contact</h3>
+</div>
+<ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant">
+<li><strong>Address:</strong> Civil Lines, Near High Court Square, Nagpur, Maharashtra 440001</li>
+<li><strong>Phone:</strong> +91 98765 43210</li>
+<li><strong>Email:</strong> contact@vastralayanagpur.demo</li>
+<li><strong>Hours:</strong> Mon - Sun: 10:30 AM – 8:30 PM</li>
+<li><strong>WhatsApp:</strong> +91 98765 43210 (27/7 Active Support)</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- SECTION 11: FOOTER CTA -->
+<section class="w-full bg-surface-container-low py-space-xl px-gutter text-center reveal-on-scroll revealed">
+<div class="max-w-3xl mx-auto flex flex-col items-center gap-space-md">
+<span class="text-label-lg text-primary uppercase tracking-wider">Connect Online</span>
+<h2 class="font-headline-xl text-on-surface font-black text-4xl leading-[48px]">Ready To Experience Nagpur's Finest Traditional Ethnic Wear?</h2>
+<p class="font-body-lg text-on-surface font-semibold text-xl">Reach out to us instantly or follow our social channels for daily festive arrivals and styling inspiration.</p>
+<div class="flex flex-wrap items-center justify-center gap-space-md pt-space-xs">
+<a class="bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container transition-all px-6 py-3.5 rounded-lg font-label-lg inline-flex items-center gap-space-sm shadow-md btn-ripple" href="https://wa.me/+919876543210?text=Hi,%20I%20want%20to%20know%20more%20about%20Vastralaya%20collections." rel="noopener noreferrer" style="background-color: rgb(37, 211, 102) !important; color: white !important;" target="_blank"><span class="material-symbols-outlined">chat</span>
+            Chat on WhatsApp</a>
+<a class="bg-surface text-on-surface hover:bg-surface-container-high transition-all px-6 py-3.5 rounded-lg font-label-lg inline-flex items-center gap-space-sm shadow-sm border border-outline-variant/30 transform hover:-translate-y-0.5" href="https://instagram.com" rel="noopener noreferrer" style="background-color: rgb(228, 64, 95) !important; color: white !important; border-color: rgb(228, 64, 95) !important;" target="_blank">
+<span class="material-symbols-outlined">photo_camera</span>
+Instagram
+</a>
+<a class="bg-surface text-on-surface hover:bg-surface-container-high transition-all px-6 py-3.5 rounded-lg font-label-lg inline-flex items-center gap-space-sm shadow-sm border border-outline-variant/30 transform hover:-translate-y-0.5" href="https://youtube.com" rel="noopener noreferrer" style="background-color: rgb(255, 0, 0) !important; color: white !important; border-color: rgb(255, 0, 0) !important;" target="_blank">
+<span class="material-symbols-outlined">play_circle</span>
+YouTube
+</a>
+<a class="bg-surface text-on-surface hover:bg-surface-container-high transition-all px-6 py-3.5 rounded-lg font-label-lg inline-flex items-center gap-space-sm shadow-sm border border-outline-variant/30 transform hover:-translate-y-0.5" href="https://threads.net" rel="noopener noreferrer" style="background-color: rgb(16, 16, 16) !important; color: white !important; border-color: rgb(16, 16, 16) !important;" target="_blank">
+<span class="material-symbols-outlined">alternate_email</span>
+Threads
+</a>
+</div>
+</div>
+</section>
+<!-- SECTION 12: DISCLAIMER -->
+<section class="w-full bg-surface py-8 px-gutter border-t border-surface-variant/30 text-center">
+<div class="max-w-4xl mx-auto">
+<p class="font-body-sm text-on-surface-variant/70 text-xs leading-relaxed">
+Disclaimer: This website is a demonstration prototype created for illustrative purposes. All imagery, branding, and text references to Vastralaya, Nagpur are simulated for web development and design showcase purposes. No commercial transactions are processed through this demo interface.
+</p>
+</div>
+</section>
+</div></main><a class="fixed bottom-6 right-6 z-50 bg-secondary text-on-secondary p-4 rounded-full shadow-lg hover:bg-secondary-container hover:text-on-secondary-container transition-all flex items-center justify-center transform hover:scale-110 pulse-glow" href="https://whatsapp.com" rel="noopener noreferrer" style="background-color: rgb(37, 211, 102) !important; color: white !important;" target="_blank"><span class="material-symbols-outlined">chat</span></a><footer class="w-full bg-surface-container-low py-space-xl"><div class="w-full px-gutter text-center text-on-surface-variant text-body-sm">© 2024 Vastralaya, Nagpur. All rights reserved.</div></footer>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Intersection Observer for scroll reveal animations
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Mobile Hamburger Menu Toggle Logic & Smooth Scroll Auto-Close
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileDropdownMenu = document.getElementById('mobile-dropdown-menu');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+  if (mobileMenuBtn && mobileDropdownMenu) {
+    mobileMenuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mobileDropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close menu automatically upon selecting any link with smooth scroll behavior
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        mobileDropdownMenu.classList.add('hidden');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!mobileDropdownMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        mobileDropdownMenu.classList.add('hidden');
+      }
+    });
+  }
+});
+
+// Disable right-click and key shortcuts to protect source code
+document.addEventListener('contextmenu', event => event.preventDefault());
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
+    e.preventDefault();
+    return false;
+  }
+});
+</script>
+</body></html>
